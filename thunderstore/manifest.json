@@ -1,7 +1,7 @@
 {
     "name": "RepoPhotonTransport",
     "version_number": "1.0.1",
-    "website_url": "",
+    "website_url": "https://github.com/10yoTalent/RepoPhotonTransport",
     "description": "Fixes 'Disconnected: ClientTimeout' when the default UDP connection does not work. Switches Photon from UDP to WSS (TLS, port 443). Port of PeakPhotonTransport by Swerrio.",
     "dependencies": [
         "BepInEx-BepInExPack-5.4.2100"
