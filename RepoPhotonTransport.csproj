@@ -1,0 +1,40 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <AssemblyName>RepoPhotonTransport</AssemblyName>
+    <RootNamespace>RepoPhotonTransport</RootNamespace>
+    <Description>Forces Photon onto WSS/443 or TCP instead of UDP (R.E.P.O port of PeakPhotonTransport).</Description>
+    <Version>1.0.1</Version>
+    <LangVersion>latest</LangVersion>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <DebugType>portable</DebugType>
+    <NoWarn>$(NoWarn);CS0436</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Переопределяются: dotnet build -c Release -p:GameDir="..." -p:ProfileDir="..." -->
+    <GameDir Condition="'$(GameDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\REPO</GameDir>
+    <ProfileDir Condition="'$(ProfileDir)' == ''">$(AppData)\r2modmanPlus-local\REPO\profiles\Default</ProfileDir>
+    <ManagedDir>$(GameDir)\REPO_Data\Managed</ManagedDir>
+    <BepInExDir>$(ProfileDir)\BepInEx\core</BepInExDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="BepInEx"><HintPath>$(BepInExDir)\BepInEx.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="0Harmony"><HintPath>$(BepInExDir)\0Harmony.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine"><HintPath>$(ManagedDir)\UnityEngine.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="UnityEngine.CoreModule"><HintPath>$(ManagedDir)\UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Photon3Unity3D"><HintPath>$(ManagedDir)\Photon3Unity3D.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="PhotonRealtime"><HintPath>$(ManagedDir)\PhotonRealtime.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="PhotonUnityNetworking"><HintPath>$(ManagedDir)\PhotonUnityNetworking.dll</HintPath><Private>false</Private></Reference>
+  </ItemGroup>
+
+  <!-- После сборки кладём dll в профиль r2modman -->
+  <Target Name="CopyToProfile" AfterTargets="Build" Condition="Exists('$(ProfileDir)\BepInEx')">
+    <MakeDir Directories="$(ProfileDir)\BepInEx\plugins\RepoPhotonTransport" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(ProfileDir)\BepInEx\plugins\RepoPhotonTransport" />
+    <Message Importance="high" Text="Installed -> $(ProfileDir)\BepInEx\plugins\RepoPhotonTransport" />
+  </Target>
+
+</Project>
